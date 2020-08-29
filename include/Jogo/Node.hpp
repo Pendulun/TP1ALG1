@@ -7,7 +7,8 @@ namespace Jogo{
 		Posicao* posicao;
 		Node* prox;
 	public:
-		Node(Posicao);
+		Node(Posicao*);
+		~Node();
 		Posicao* getPosicao();
 		Node* getProx();
 		void setProx(Node*);
