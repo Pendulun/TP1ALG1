@@ -2,6 +2,11 @@
 
 namespace Jogo{
 
+	Jogo::Jogo(){
+		this.listaJogadores = null;
+		this.listaAdjacencia = nullptr;
+	}
+
 	void Jogo::configuraJogo(std::string arq_entrada){
 		std::fstream fs;
 		std::cout<<"Nome do Arquivo: "<<"'"<<arq_entrada<<"'"<<std::endl;
