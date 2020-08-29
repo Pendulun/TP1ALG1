@@ -1,7 +1,7 @@
 #ifndef POSICAO_H
 #define POSICAO_H
 namespace Jogo{
-	class Posicao{
+	class Posicao::PosicaoJogador{
 	private:
 		int x;
 		int y;
