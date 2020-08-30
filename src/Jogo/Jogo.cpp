@@ -106,8 +106,9 @@ namespace Jogo{
 		BFS();
 		Jogador* vencedor = pegarMenor();
 		if(vencedor!=nullptr){
+			std::cout<<"Vencedor: ";
 			std::cout<<vencedor->getNome()<<std::endl;
-			std::cout<<vencedor->getTamCaminho();
+			std::cout<<vencedor->getTamCaminho()<<std::endl;
 		}else{
 			std::cout<<"SEM VENCEDORES"<<std::endl;
 		}
@@ -121,7 +122,7 @@ namespace Jogo{
 		for(int i=0;i<(this->N*this->M)-2;i++){
 			Descobertos[i]=false;
 		} 
-		std::cout<<"A"<<std::endl;
+		
 
 		//Árvore T em formato de vetor
 		this->arvore = new std::pair<int,int>[this->N*this->M];
@@ -129,7 +130,6 @@ namespace Jogo{
 			std::pair< int, int> zera = std::make_pair (-1,-1);
 			arvore[i]= zera;
 		}
-		std::cout<<"B"<<std::endl;
 
 		//Lista de listas
 		std::list<std::list<Node>> listaDeListas;
@@ -142,20 +142,17 @@ namespace Jogo{
 		primeiraLista.push_back(final);
 		listaDeListas.push_back(primeiraLista);
 		iteradorListaListas = listaDeListas.begin();
-		std::cout<<"C"<<std::endl;
-		
-		std::cout<<"D"<<std::endl;
+
 		//Enquanto L[i] não for vazio
 		while(!(*iteradorListaListas).empty()){
-			std::cout<<"E"<<std::endl;
 			//Nova L[i+1]
 			std::list<Node> novaCamada;
 			std::list<Node>::iterator iteradorLista;
 			//Para cada nó u pertencente a L[i]
 			for(iteradorLista=(*iteradorListaListas).begin();iteradorLista!=(*iteradorListaListas).end();iteradorLista++){
-				std::cout<<"F"<<std::endl;
+
 				std::list<Node*>::iterator iteradorAdjacencia;
-				std::cout<<"F.1"<<std::endl;
+
 				std::cout<<"No atual: X: "<<(*iteradorLista).getX()<<" Y: "<<(*iteradorLista).getY()<<std::endl;
 				unsigned int posicaoListaAdjacencia = (((*iteradorLista).getX())*this->N) + ((*iteradorLista).getY());
 				std::cout<<"Analisando posicao Adjacencia: "<<posicaoListaAdjacencia<<std::endl;
@@ -163,12 +160,11 @@ namespace Jogo{
 				for(iteradorAdjacencia = ((this->listaAdjacencia)[posicaoListaAdjacencia]).begin();
 	  				iteradorAdjacencia!=((this->listaAdjacencia)[posicaoListaAdjacencia]).end();
 	  				iteradorAdjacencia++){
-					std::cout<<"G"<<std::endl;
+
 					unsigned int posicaoDescoberto = ((*iteradorAdjacencia)->getX()*this->N) + ((*iteradorAdjacencia)->getY());
 					std::cout<<"Analisando posicao: "<<posicaoDescoberto<<std::endl;
 					//Se v não tiver sido descoberto
 	  				if(!Descobertos[posicaoDescoberto]){
-	  					std::cout<<"H"<<std::endl;
 	  					//Defina Descoberto[v]=true
 	  					Descobertos[posicaoDescoberto]=true;
 	  					this->arvore[posicaoDescoberto].first= (*iteradorLista).getX();
@@ -176,13 +172,13 @@ namespace Jogo{
 	  					//Adicione v à L[i+1]
 	  					novaCamada.push_back(*(*iteradorAdjacencia));
 	  				}
-	  				std::cout<<"I"<<std::endl;
+
 	  			}
 			}
 			//Coloca L[i+1] em L
 			listaDeListas.push_back(novaCamada);
 			iteradorListaListas++;
-			std::cout<<"J"<<std::endl;
+
 		}
 
 		std::cout<<"Quem achou quem: "<<std::endl;
@@ -203,8 +199,9 @@ namespace Jogo{
 			int distancia = calculaDistancia((*iterador));
 			if(distancia!=NULL){
 				std::cout<<"Jogador: "<<(*iterador)->getNome();
-				std::cout<<"Distancia: "<<(*iterador)->getTamCaminho();
-				std::cout<<"Peso penultima jogada: "<<(*iterador)->getPesoPenultimaJogada()<<std::endl;
+				std::cout<<" Distancia: "<<(*iterador)->getTamCaminho();
+				std::cout<<" Peso penultima jogada: "<<(*iterador)->getPesoPenultimaJogada()<<std::endl;
+				//Adicionando na fila
 				if((*filaFinal).empty()){
 					(*filaFinal).push_back((*iterador));
 				}else{
@@ -229,10 +226,22 @@ namespace Jogo{
 						}
 					}
 				}
-				
 			}
 		}
-		return nullptr;
+		std::cout<<"Imprimindo ordem final: "<<std::endl;
+		for(auto it=(*filaFinal).begin();it!=(*filaFinal).end();it++){
+			std::cout<<"Jogador: "<<(*it)->getNome()<<" Distancia: "<<(*it)->getTamCaminho();
+			std::cout<<" Penúltimo peso: "<<(*it)->getPesoPenultimaJogada();
+			std::cout<<" Ordem no início: "<<(*it)->getOrdemPrimeiraJogada()<<std::endl;
+		}
+
+		if((*filaFinal).empty()){
+			std::cout<<"A"<<std::endl;
+			return nullptr;
+		}else{
+			std::cout<<"B"<<std::endl;
+			return (*filaFinal).front();
+		}
 	}
 
 	unsigned int Jogo::calculaDistancia(Jogador* jogador){
