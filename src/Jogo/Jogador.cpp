@@ -1,10 +1,10 @@
 #include "Jogador.hpp"
 
 namespace Jogo{
-	Jogador::Jogador(std::string nome,int ordem,int x, int y, int peso){
+	Jogador::Jogador(std::string nome,int ordem,int x, int y){
 		this->nome = nome;
 		this->ordemPrimeiraJogada = ordem;
-		this->posicaoInicial = new Posicao(x,y,peso);
+		this->posicaoInicial = new PosicaoJogador(x,y);
 	}
 
 	Jogador::~Jogador(){
@@ -23,7 +23,7 @@ namespace Jogo{
 		return this->ordemPrimeiraJogada;
 	}
 
-	Posicao* Jogador::getPosicaoInicial(){
+	PosicaoJogador* Jogador::getPosicaoInicial(){
 		return this->posicaoInicial;
 	}
 
