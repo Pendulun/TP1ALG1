@@ -2,7 +2,7 @@
 #define JOGO_H
 #include "Jogador.hpp"
 #include "Node.hpp"
-#include<iterator>
+#include <iterator>
 #include <fstream>
 #include <string>
 #include <iostream>
