@@ -10,6 +10,10 @@ namespace Jogo{
 		this->pesoPenultimaJogada = 0;
 	}
 
+	Jogador::~Jogador(){
+		
+	}
+
 	unsigned int Jogador::getTamCaminho(){
 		return this->tamCaminho;
 	}

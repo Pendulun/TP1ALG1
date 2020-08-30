@@ -11,9 +11,19 @@ namespace Jogo{
 	}
 
 	Jogo::~Jogo(){
+		std::cout<<"A"<<std::endl;
+		for(auto it=(*this->listaAdjacencia).begin();it!=(*this->listaAdjacencia).end();it++){
+			delete (*it);
+		}
+		std::cout<<"B"<<std::endl;
 		delete this->listaAdjacencia;
+		for(auto it=(*this->listaJogadores).begin();it!=(*this->listaJogadores).end();it++){
+			delete (*it);
+		}
+		std::cout<<"C"<<std::endl;
 		delete this->listaJogadores;
 		delete this->arvore;
+		std::cout<<"D"<<std::endl;
 	}
 
 	void Jogo::configuraJogo(std::string arq_entrada){
@@ -33,23 +43,7 @@ namespace Jogo{
 	  		for(unsigned int linha=0;linha<this->M;linha++){
 	  			for(unsigned int coluna=0;coluna<this->N;coluna++){
 	  				fs>>peso;
-	  				std::cout<<"Linha: "<<linha<<" Coluna: "<<coluna<<" Peso: "<<std::stoi(peso)<<" ";
 	  				addArestas(linha,coluna,std::stoi(peso));
-	  			}
-	  			std::cout<<std::endl;
-	  		}
-
-	  		//std::list<Node*>* listaAdjacencia
-	  		std::list<Node*>::iterator iterador;
-	  		for(int count = 0; count<(N*M);count++){
-	  			std::cout<<"Elementos da lista: "<<count<<std::endl;
-	  			for(iterador = ((this->listaAdjacencia)[count]).begin();
-	  				iterador!=((this->listaAdjacencia)[count]).end();
-	  				iterador++){
-	  				std::cout<<"X: "<<(*iterador)->getX();
-	  				std::cout<<" Y: "<<(*iterador)->getY();
-	  				std::cout<<" Peso: "<<(*iterador)->getPeso()<<std::endl;
-
 	  			}
 	  		}
 	  		
@@ -61,7 +55,6 @@ namespace Jogo{
 	  			fs>>y;
 	  			jogador = new Jogador(((std::string) nomes.substr(numJogador,1)),numJogador,x,y);
 	  			(this->listaJogadores)->push_back(jogador);
-	  			std::cout<<"Jogador: "<<jogador->getNome()<<" X: "<<jogador->getX()<<" Y: "<<jogador->getY()<<std::endl;
 	  		}
 	  		std::cout<<"Fim"<<std::endl;
 	  		fs.close();
@@ -77,24 +70,19 @@ namespace Jogo{
 	}
 
 	void Jogo::addArestas(int x, int y, int peso){
-		std::cout<<"Se liga com:"<<std::endl;
 		//std::list<Node*>* listaAdjacencia;
 		if(peso>0){
 			if((x+peso)<=(this->M-1)){
 				int posicao = (x+peso)*this->N + (y);
-				std::cout<<"X: "<<x+peso<<" Y: "<<y<<" Posicao: "<<posicao<<std::endl;
 				(this->listaAdjacencia[posicao]).push_back(new Node(x,y,peso));
 			}if((x-peso)>=0){
 				int posicao = (x-peso)*this->N + (y);
-				std::cout<<"X: "<<x-peso<<" Y: "<<y<<" Posicao: "<<posicao<<std::endl;
 				(this->listaAdjacencia[posicao]).push_back(new Node(x,y,peso));
 			}if((y+peso)<=(this->N-1)){
 				int posicao = (x*this->N) + (y+peso);
-				std::cout<<"X: "<<x<<" Y: "<<(y+peso)<<" Posicao: "<<posicao<<std::endl;
 				(this->listaAdjacencia[posicao]).push_back(new Node(x,y,peso));
 			}if((y-peso)>=0){
 				int posicao = (x*this->N) + (y-peso);
-				std::cout<<"X: "<<x<<" Y: "<<(y-peso)<<" Posicao: "<<posicao<<std::endl;
 				(this->listaAdjacencia[posicao]).push_back(new Node(x,y,peso));
 			}
 		}
@@ -153,16 +141,13 @@ namespace Jogo{
 
 				std::list<Node*>::iterator iteradorAdjacencia;
 
-				std::cout<<"No atual: X: "<<(*iteradorLista).getX()<<" Y: "<<(*iteradorLista).getY()<<std::endl;
+			
 				unsigned int posicaoListaAdjacencia = (((*iteradorLista).getX())*this->N) + ((*iteradorLista).getY());
-				std::cout<<"Analisando posicao Adjacencia: "<<posicaoListaAdjacencia<<std::endl;
 				//Cada aresta (u,v) incidente a u
 				for(iteradorAdjacencia = ((this->listaAdjacencia)[posicaoListaAdjacencia]).begin();
 	  				iteradorAdjacencia!=((this->listaAdjacencia)[posicaoListaAdjacencia]).end();
 	  				iteradorAdjacencia++){
-
 					unsigned int posicaoDescoberto = ((*iteradorAdjacencia)->getX()*this->N) + ((*iteradorAdjacencia)->getY());
-					std::cout<<"Analisando posicao: "<<posicaoDescoberto<<std::endl;
 					//Se v não tiver sido descoberto
 	  				if(!Descobertos[posicaoDescoberto]){
 	  					//Defina Descoberto[v]=true
@@ -181,12 +166,12 @@ namespace Jogo{
 
 		}
 
-		std::cout<<"Quem achou quem: "<<std::endl;
-		for(int it = 0;it<this->N*this->M;it++){
-			std::cout<<"Posicao: "<<it<<std::endl;
-			std::cout<<"Achado por: X:"<<this->arvore[it].first;
-			std::cout<<" Y: "<<this->arvore[it].second<<std::endl;
-		}
+		// std::cout<<"Quem achou quem: "<<std::endl;
+		// for(int it = 0;it<this->N*this->M;it++){
+		// 	std::cout<<"Posicao: "<<it<<std::endl;
+		// 	std::cout<<"Achado por: X:"<<this->arvore[it].first;
+		// 	std::cout<<" Y: "<<this->arvore[it].second<<std::endl;
+		// }
 	}
 
 	Jogador* Jogo::pegarMenor(){
@@ -194,13 +179,8 @@ namespace Jogo{
 		//Fila dos jogadores de acordo com o tamanho do caminho e os critérios de desempate
 		std::list<Jogador*>* filaFinal = new std::list<Jogador*>;
 		for(auto iterador = (*this->listaJogadores).begin();iterador!=(*this->listaJogadores).end();iterador++){
-			std::cout<<"Jogador Analisado: ";
-			std::cout<<"Jogador: "<<(*iterador)->getNome()<<" X: "<<(*iterador)->getX()<<" Y: "<<(*iterador)->getY()<<std::endl;
 			int distancia = calculaDistancia((*iterador));
 			if(distancia!=NULL){
-				std::cout<<"Jogador: "<<(*iterador)->getNome();
-				std::cout<<" Distancia: "<<(*iterador)->getTamCaminho();
-				std::cout<<" Peso penultima jogada: "<<(*iterador)->getPesoPenultimaJogada()<<std::endl;
 				//Adicionando na fila
 				if((*filaFinal).empty()){
 					(*filaFinal).push_back((*iterador));
@@ -249,7 +229,6 @@ namespace Jogo{
 		unsigned int y = jogador->getY();
 		unsigned int posicaoJogador = x*this->N + y;
 		if(this->arvore[posicaoJogador].first!=-1){
-				std::cout<<"Alcança Objetivo"<<std::endl;
 				bool achou = false;
 				unsigned int tamCaminho=0;
 				unsigned int posAtual = posicaoJogador;
@@ -290,7 +269,6 @@ namespace Jogo{
 				jogador->setPesoPenultimaJogada(penultimoPeso);
 				return tamCaminho;
 		}else{
-			std::cout<<"Não alcança Objetivo"<<std::endl;
 			return NULL;
 		}
 	}
