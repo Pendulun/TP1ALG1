@@ -196,7 +196,7 @@ namespace Jogo{
 	Jogador* Jogo::pegarMenor(){
 		std::cout<<"Analisando Jogadores"<<std::endl;
 		//Fila dos jogadores de acordo com o tamanho do caminho e os critérios de desempate
-		std::list<Jogador*> filaFinal = new std::list<Jogador*>;
+		std::list<Jogador*>* filaFinal = new std::list<Jogador*>;
 		for(auto iterador = (*this->listaJogadores).begin();iterador!=(*this->listaJogadores).end();iterador++){
 			std::cout<<"Jogador Analisado: ";
 			std::cout<<"Jogador: "<<(*iterador)->getNome()<<" X: "<<(*iterador)->getX()<<" Y: "<<(*iterador)->getY()<<std::endl;
@@ -205,7 +205,31 @@ namespace Jogo{
 				std::cout<<"Jogador: "<<(*iterador)->getNome();
 				std::cout<<"Distancia: "<<(*iterador)->getTamCaminho();
 				std::cout<<"Peso penultima jogada: "<<(*iterador)->getPesoPenultimaJogada()<<std::endl;
-				for(auto it=filaFinal)
+				if((*filaFinal).empty()){
+					(*filaFinal).push_back((*iterador));
+				}else{
+					for(auto it=(*filaFinal).begin();it!=(*filaFinal).end();it++){
+						//Se o tamanho do analisado é maior
+						if((*it)->getTamCaminho()>(*iterador)->getTamCaminho()){
+							(*filaFinal).insert(it,(*iterador));
+							break;
+						//Se o tamanho do analisado é igual
+						}else if((*it)->getTamCaminho()==(*iterador)->getTamCaminho()){
+							//Se o penultimo peso do analisado é maior
+							if((*it)->getPesoPenultimaJogada()>(*iterador)->getPesoPenultimaJogada()){
+								(*filaFinal).insert(it,(*iterador));
+								break;
+								//Se o penultimo peso do analisado é igual
+							}else if((*it)->getPesoPenultimaJogada()==(*iterador)->getPesoPenultimaJogada()){
+								if((*it)->getOrdemPrimeiraJogada()>(*iterador)->getOrdemPrimeiraJogada()){
+									(*filaFinal).insert(it,(*iterador));
+									break;
+								}
+							}
+						}
+					}
+				}
+				
 			}
 		}
 		return nullptr;
