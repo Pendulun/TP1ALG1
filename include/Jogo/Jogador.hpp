@@ -20,7 +20,6 @@ namespace Jogo{
 		unsigned int getY();
 		void setTamCaminho(unsigned int);
 		void setPesoPenultimaJogada(unsigned int);
-		~Jogador();
 	};
 }
 #endif

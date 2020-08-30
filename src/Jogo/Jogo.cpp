@@ -11,16 +11,6 @@ namespace Jogo{
 	}
 
 	Jogo::~Jogo(){
-		std::cout<<"A"<<std::endl;
-		//Deleta os nós da lista
-		// unsigned int count =0;
-		// for(auto it=(*this->listaAdjacencia).begin();it!=(*this->listaAdjacencia).end();it++){
-		// 	Node* no = (*it);
-		// 	delete no;
-		// 	std::cout<<"Nó deletado: "<<count<<std::endl;
-		// 	count++;
-		// }
-		std::cout<<"B"<<std::endl;
 		//Deleta os nós das listas da lista de listas
 		for(unsigned int iteradorAdjacencia = 0; iteradorAdjacencia <(this->N*this->M); iteradorAdjacencia++){
 			for(auto itNos =((this->listaAdjacencia)[iteradorAdjacencia]).begin();
@@ -29,32 +19,24 @@ namespace Jogo{
 				delete (*itNos);
 			}
 	  	}
-	  	std::cout<<"B.1"<<std::endl;
-		delete this->listaAdjacencia;
-		std::cout<<"C"<<std::endl;
+		delete[] this->listaAdjacencia;
+		//Deleta Os jogadores de dentro da lista de Jogadores
 		for(auto it=(*this->listaJogadores).begin();it!=(*this->listaJogadores).end();it++){
-			delete (*it);
+			delete *it;
 		}
-		std::cout<<"D"<<std::endl;
 		delete this->listaJogadores;
-		std::cout<<"E"<<std::endl;
-		delete this->arvore;
-		std::cout<<"F"<<std::endl;
+		delete[] this->arvore;
 	}
 
 	void Jogo::configuraJogo(std::string arq_entrada){
 		std::fstream fs;
-		std::cout<<"Nome do Arquivo: "<<"'"<<arq_entrada<<"'"<<std::endl;
 		fs.open(arq_entrada, std::fstream::in);
 		if(fs.is_open()){
-    		std::cout<< "Arquivo aberto com sucesso"<<std::endl;
 	  		unsigned int K=0;
 	  		fs>>this->M;
 	  		fs>>this->N;
 	  		this->listaAdjacencia = geraListaAdjacencia();
-	  		std::cout<<"M: "<<this->M<<" N: "<<this->N<<std::endl;
 	  		fs>>K;
-	  		std::cout<<K<<std::endl;
 	  		std::string peso;
 	  		for(unsigned int linha=0;linha<this->M;linha++){
 	  			for(unsigned int coluna=0;coluna<this->N;coluna++){
@@ -72,7 +54,6 @@ namespace Jogo{
 	  			jogador = new Jogador(((std::string) nomes.substr(numJogador,1)),numJogador,x,y);
 	  			(this->listaJogadores)->push_back(jogador);
 	  		}
-	  		std::cout<<"Fim"<<std::endl;
 	  		fs.close();
  		 }else{
     		std::cout<< "Erro ao abrir o arquivo - confira o local e nome do arquivo"<<std::endl;
@@ -106,11 +87,9 @@ namespace Jogo{
 
 
 	void Jogo::ganhador(){
-		std::cout<<"Ganhador"<<std::endl;
 		BFS();
 		Jogador* vencedor = pegarMenor();
 		if(vencedor!=nullptr){
-			std::cout<<"Vencedor: ";
 			std::cout<<vencedor->getNome()<<std::endl;
 			std::cout<<vencedor->getTamCaminho()<<std::endl;
 		}else{
@@ -119,7 +98,6 @@ namespace Jogo{
 	}
 
 	void Jogo::BFS(){
-		std::cout<<"BFS"<<std::endl;
 		//Descobertos
 		bool Descobertos[this->N*this->M];
 		Descobertos[((this->N)*(this->M))-1]=true;
@@ -191,7 +169,6 @@ namespace Jogo{
 	}
 
 	Jogador* Jogo::pegarMenor(){
-		std::cout<<"Analisando Jogadores"<<std::endl;
 		//Fila dos jogadores de acordo com o tamanho do caminho e os critérios de desempate
 		std::list<Jogador*>* filaFinal = new std::list<Jogador*>;
 		for(auto iterador = (*this->listaJogadores).begin();iterador!=(*this->listaJogadores).end();iterador++){
@@ -224,19 +201,20 @@ namespace Jogo{
 				}
 			}
 		}
-		std::cout<<"Imprimindo ordem final: "<<std::endl;
-		for(auto it=(*filaFinal).begin();it!=(*filaFinal).end();it++){
-			std::cout<<"Jogador: "<<(*it)->getNome()<<" Distancia: "<<(*it)->getTamCaminho();
-			std::cout<<" Penúltimo peso: "<<(*it)->getPesoPenultimaJogada();
-			std::cout<<" Ordem no início: "<<(*it)->getOrdemPrimeiraJogada()<<std::endl;
-		}
+		// std::cout<<"Imprimindo ordem final: "<<std::endl;
+		// for(auto it=(*filaFinal).begin();it!=(*filaFinal).end();it++){
+		// 	std::cout<<"Jogador: "<<(*it)->getNome()<<" Distancia: "<<(*it)->getTamCaminho();
+		// 	std::cout<<" Penúltimo peso: "<<(*it)->getPesoPenultimaJogada();
+		// 	std::cout<<" Ordem no início: "<<(*it)->getOrdemPrimeiraJogada()<<std::endl;
+		// }
 
 		if((*filaFinal).empty()){
-			std::cout<<"A"<<std::endl;
+			delete filaFinal;
 			return nullptr;
 		}else{
-			std::cout<<"B"<<std::endl;
-			return (*filaFinal).front();
+			Jogador* jogador = (*filaFinal).front();
+			delete filaFinal;
+			return jogador;
 		}
 	}
 
