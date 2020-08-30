@@ -5,21 +5,21 @@ namespace Jogo{
 	class Jogador{
 	private:
 		std::string nome;
-		int tamCaminho;
-		int pesoPenultimaJogada;
-		int ordemPrimeiraJogada;
+		unsigned int tamCaminho;
+		unsigned int pesoPenultimaJogada;
+		unsigned int ordemPrimeiraJogada;
 		unsigned int xPosInicial;
 		unsigned int yPosInicial;
 	public:
 		Jogador(std::string nome,unsigned int ordem,unsigned int x, unsigned int y);
-		int getTamCaminho();
-		int getPesoPenultimaJogada();
-		int getOrdemPrimeiraJogada();
+		unsigned int getTamCaminho();
+		unsigned int getPesoPenultimaJogada();
+		unsigned int getOrdemPrimeiraJogada();
 		std::string getNome();
 		unsigned int getX();
 		unsigned int getY();
-		void setTamCaminho(int);
-		void setPesoPenultimaJogada(int);
+		void setTamCaminho(unsigned int);
+		void setPesoPenultimaJogada(unsigned int);
 		~Jogador();
 	};
 }

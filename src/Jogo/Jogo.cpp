@@ -195,34 +195,70 @@ namespace Jogo{
 
 	Jogador* Jogo::pegarMenor(){
 		std::cout<<"Analisando Jogadores"<<std::endl;
+		//Fila dos jogadores de acordo com o tamanho do caminho e os critérios de desempate
+		std::list<Jogador*> filaFinal = new std::list<Jogador*>;
 		for(auto iterador = (*this->listaJogadores).begin();iterador!=(*this->listaJogadores).end();iterador++){
 			std::cout<<"Jogador Analisado: ";
 			std::cout<<"Jogador: "<<(*iterador)->getNome()<<" X: "<<(*iterador)->getX()<<" Y: "<<(*iterador)->getY()<<std::endl;
 			int distancia = calculaDistancia((*iterador));
 			if(distancia!=NULL){
-
+				std::cout<<"Jogador: "<<(*iterador)->getNome();
+				std::cout<<"Distancia: "<<(*iterador)->getTamCaminho();
+				std::cout<<"Peso penultima jogada: "<<(*iterador)->getPesoPenultimaJogada()<<std::endl;
+				for(auto it=filaFinal)
 			}
 		}
 		return nullptr;
 	}
 
-	int Jogo::calculaDistancia(Jogador* jogador){
+	unsigned int Jogo::calculaDistancia(Jogador* jogador){
 		unsigned int x = jogador->getX();
 		unsigned int y = jogador->getY();
 		unsigned int posicaoJogador = x*this->N + y;
 		if(this->arvore[posicaoJogador].first!=-1){
 				std::cout<<"Alcança Objetivo"<<std::endl;
 				bool achou = false;
-				while(achou)
-				for(int it = 0;it<this->N*this->M;it++){
-					std::cout<<"Achado por: X:"<<this->arvore[it].first;
-					std::cout<<" Y: "<<this->arvore[it].second<<std::endl;
+				unsigned int tamCaminho=0;
+				unsigned int posAtual = posicaoJogador;
+				unsigned int penultimoPeso = 0;
+				unsigned int xAtual = x;
+				unsigned int yAtual = y;
+				//Percorre o caminho até chegar no final
+				while(!achou){
+					if(this->arvore[posAtual].first==this->M-1 && this->arvore[posAtual].second==this->N-1){
+						tamCaminho++;
+						jogador->setTamCaminho(tamCaminho);
+						jogador->setPesoPenultimaJogada(penultimoPeso);
+						achou=true;
+					}else{
+						tamCaminho++;
+						//Descobre o peso do nó
+						if(this->arvore[posAtual].first!=xAtual){
+							if(this->arvore[posAtual].first>xAtual){
+								penultimoPeso=this->arvore[posAtual].first-xAtual;
+							}else{
+								penultimoPeso=xAtual-this->arvore[posAtual].first;
+							}
+						}else{
+							if(this->arvore[posAtual].second>yAtual){
+								penultimoPeso=this->arvore[posAtual].second-yAtual;
+							}else{
+								penultimoPeso=yAtual-this->arvore[posAtual].second;
+							}
+						}
+						//Atualiza a posição atual para comparar com a próxima
+						xAtual=this->arvore[posAtual].first;
+						yAtual=this->arvore[posAtual].second;
+						//Nó seguinte
+						posAtual = xAtual*this->N + yAtual;
+					}
 				}
-				jogador->setTamCaminho();
-			}else{
-				std::cout<<"Não alcança Objetivo"<<std::endl;
-				return NULL;
-			}
-		
+				jogador->setTamCaminho(tamCaminho);
+				jogador->setPesoPenultimaJogada(penultimoPeso);
+				return tamCaminho;
+		}else{
+			std::cout<<"Não alcança Objetivo"<<std::endl;
+			return NULL;
+		}
 	}
 }

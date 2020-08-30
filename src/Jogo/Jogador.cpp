@@ -6,9 +6,11 @@ namespace Jogo{
 		this->ordemPrimeiraJogada = ordem;
 		this->xPosInicial = x;
 		this->yPosInicial = y;
+		this->tamCaminho = 0;
+		this->pesoPenultimaJogada = 0;
 	}
 
-	int Jogador::getTamCaminho(){
+	unsigned int Jogador::getTamCaminho(){
 		return this->tamCaminho;
 	}
 
@@ -16,11 +18,11 @@ namespace Jogo{
 		return this->nome;
 	}
 
-	int Jogador::getPesoPenultimaJogada(){
+	unsigned int Jogador::getPesoPenultimaJogada(){
 		return this->pesoPenultimaJogada;
 	}
 
-	int Jogador::getOrdemPrimeiraJogada(){
+	unsigned int Jogador::getOrdemPrimeiraJogada(){
 		return this->ordemPrimeiraJogada;
 	}
 
@@ -32,11 +34,11 @@ namespace Jogo{
 		return this->yPosInicial;
 	}
 
-	void Jogador::setTamCaminho(int tamanho){
+	void Jogador::setTamCaminho(unsigned int tamanho){
 		this->tamCaminho = tamanho;
 	}
 
-	void Jogador::setPesoPenultimaJogada(int peso){
+	void Jogador::setPesoPenultimaJogada(unsigned int peso){
 		this->pesoPenultimaJogada = peso;
 	}
 }
