@@ -12,18 +12,34 @@ namespace Jogo{
 
 	Jogo::~Jogo(){
 		std::cout<<"A"<<std::endl;
-		for(auto it=(*this->listaAdjacencia).begin();it!=(*this->listaAdjacencia).end();it++){
-			delete (*it);
-		}
+		//Deleta os nós da lista
+		// unsigned int count =0;
+		// for(auto it=(*this->listaAdjacencia).begin();it!=(*this->listaAdjacencia).end();it++){
+		// 	Node* no = (*it);
+		// 	delete no;
+		// 	std::cout<<"Nó deletado: "<<count<<std::endl;
+		// 	count++;
+		// }
 		std::cout<<"B"<<std::endl;
+		//Deleta os nós das listas da lista de listas
+		for(unsigned int iteradorAdjacencia = 0; iteradorAdjacencia <(this->N*this->M); iteradorAdjacencia++){
+			for(auto itNos =((this->listaAdjacencia)[iteradorAdjacencia]).begin();
+			itNos!= ((this->listaAdjacencia)[iteradorAdjacencia]).end();
+			itNos++){
+				delete (*itNos);
+			}
+	  	}
+	  	std::cout<<"B.1"<<std::endl;
 		delete this->listaAdjacencia;
+		std::cout<<"C"<<std::endl;
 		for(auto it=(*this->listaJogadores).begin();it!=(*this->listaJogadores).end();it++){
 			delete (*it);
 		}
-		std::cout<<"C"<<std::endl;
-		delete this->listaJogadores;
-		delete this->arvore;
 		std::cout<<"D"<<std::endl;
+		delete this->listaJogadores;
+		std::cout<<"E"<<std::endl;
+		delete this->arvore;
+		std::cout<<"F"<<std::endl;
 	}
 
 	void Jogo::configuraJogo(std::string arq_entrada){
