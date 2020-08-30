@@ -19,7 +19,7 @@ namespace Jogo{
 		std::list<Node*>* listaAdjacencia;
 		void addArestas(int,int,int);
 		std::list<Node*>* geraListaAdjacencia();
-		int N,M;
+		unsigned int N,M;
 		void BFS();
 	};
 }

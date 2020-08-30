@@ -8,7 +8,6 @@ namespace Jogo{
 		int peso;
 	public:
 		Node(int,int,int);
-		~Node();
 		int getX();
 		int getY();
 		int getPeso();

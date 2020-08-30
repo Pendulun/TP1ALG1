@@ -32,9 +32,23 @@ namespace Jogo{
 	  			for(unsigned int coluna=0;coluna<this->M;coluna++){
 	  				fs>>peso;
 	  				std::cout<<"Linha: "<<linha<<" Coluna: "<<coluna<<" Peso: "<<std::stoi(peso)<<" ";
-	  				addArestas(linha,coluna,std::stoi(peso),this->N,this->M);
+	  				addArestas(linha,coluna,std::stoi(peso));
 	  			}
 	  			std::cout<<std::endl;
+	  		}
+
+	  		//std::list<Node*>* listaAdjacencia
+	  		std::list<Node*>::iterator iterador;
+	  		for(int count = 0; count<(N*M);count++){
+	  			std::cout<<"Elementos da lista: "<<count<<std::endl;
+	  			for(iterador = ((this->listaAdjacencia)[count]).begin();
+	  				iterador!=((this->listaAdjacencia)[count]).end();
+	  				iterador++){
+	  				std::cout<<"X: "<<(*iterador)->getX();
+	  				std::cout<<" Y: "<<(*iterador)->getY();
+	  				std::cout<<" Peso: "<<(*iterador)->getPeso()<<std::endl;
+
+	  			}
 	  		}
 	  		
 	  		unsigned int x,y;
@@ -86,19 +100,69 @@ namespace Jogo{
 
 
 	void Jogo::ganhador(){
+		std::cout<<"Ganhador"<<std::endl;
 		BFS();
 	}
 
 	void Jogo::BFS(){
+		std::cout<<"BFS"<<std::endl;
 		bool Descobertos[this->N*this->M];
+		//Descobertos
 		Descobertos[((this->N)*(this->M))-1]=true;
 		for(int i=0;i<(this->N*this->M)-2;i++){
 			Descobertos[i]=false;
 		} 
-		////////////////////////CONTINUAR DAQUI
+		std::cout<<"A"<<std::endl;
+		//Quem achou quem
+		std::pair< int,int> achadoPor[this->N*this->M];
+		for(int i=0;i<(this->N*this->M);i++){
+			std::pair< int, int> zera = std::make_pair (-1,-1);
+			achadoPor[i]= zera;
+		}
+		std::cout<<"B"<<std::endl;
 		std::list<std::list<Node>> listaDeListas;
+		std::list<std::list<Node>>::iterator iteradorListaListas;
 		std::list<Node> primeiraLista;
-		// Node(this->N-1,this->M-1)
-		primeiraLista.push_back()
+		Node final = Node(this->N,this->M,0);
+		primeiraLista.push_back(final);
+		listaDeListas.push_back(primeiraLista);
+		std::cout<<"C"<<std::endl;
+		unsigned int camadas=0;
+		iteradorListaListas = listaDeListas.begin();
+		std::cout<<"D"<<std::endl;
+		while(!(*iteradorListaListas).empty()){
+			std::cout<<"E"<<std::endl;
+			std::list<Node> novaCamada;
+			std::list<Node>::iterator iteradorLista;
+			for(iteradorLista=(*iteradorListaListas).begin();iteradorLista!=(*iteradorListaListas).end();iteradorLista++){
+				std::cout<<"F"<<std::endl;
+				std::list<Node*>::iterator iteradorAdjacencia;
+				unsigned int posicaoListaAdjacencia = ((*iteradorLista).getX()*this->N) + ((*iteradorLista).getY());
+				for(iteradorAdjacencia = ((this->listaAdjacencia)[posicaoListaAdjacencia]).begin();
+	  				iteradorAdjacencia!=((this->listaAdjacencia)[posicaoListaAdjacencia]).end();
+	  				iteradorAdjacencia++){
+					std::cout<<"G"<<std::endl;
+					unsigned int posicaoDescoberto = ((*iteradorAdjacencia)->getX()*this->N) + ((*iteradorAdjacencia)->getY());
+					std::cout<<"Analisando posicao: "<<posicaoDescoberto<<std::endl;
+	  				if(!Descobertos[posicaoDescoberto]){
+	  					std::cout<<"H"<<std::endl;
+	  					Descobertos[posicaoDescoberto]=true;
+	  					achadoPor[posicaoDescoberto]= std::make_pair((*iteradorAdjacencia)->getX(),(*iteradorAdjacencia)->getY());
+	  					novaCamada.push_back(*(*iteradorAdjacencia));
+	  				}
+	  				std::cout<<"I"<<std::endl;
+	  			}
+			}
+			listaDeListas.push_back(novaCamada);
+			camadas++;
+			std::cout<<"J"<<std::endl;
+		}
+		std::cout<<"Quem achou quem: "<<std::endl;
+		//std::pair< int,int> achadoPor
+		for(int it = 0;it<this->N*this->M;it++){
+			std::cout<<"Posicao: "<<it<<std::endl;
+			std::cout<<"Achado por: X:"<<achadoPor[it].first;
+			std::cout<<" Y: "<<achadoPor[it].second<<std::endl;
+		}
 	}
 }
