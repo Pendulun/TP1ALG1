@@ -5,6 +5,8 @@ namespace Jogo{
 	Jogo::Jogo(){
 		this->listaJogadores = new std::list<Jogador*>;
 		this->listaAdjacencia = nullptr;
+		this->N=0;
+		this->M=0;
 	}
 
 	Jogo::~Jogo(){
@@ -18,24 +20,23 @@ namespace Jogo{
 		fs.open(arq_entrada, std::fstream::in);
 		if(fs.is_open()){
     		std::cout<< "Arquivo aberto com sucesso"<<std::endl;
-    		unsigned int N=0;
-	  		unsigned int M=0;
 	  		unsigned int K=0;
-	  		fs>>N;
-	  		fs>>M;
-	  		this->listaAdjacencia = geraListaAdjacencia(N,M);
-	  		std::cout<<N<<" "<<M<<std::endl;
+	  		fs>>this->N;
+	  		fs>>this->M;
+	  		this->listaAdjacencia = geraListaAdjacencia();
+	  		std::cout<<this->N<<" "<<this->M<<std::endl;
 	  		fs>>K;
 	  		std::cout<<K<<std::endl;
 	  		std::string peso;
-	  		for(unsigned int linha=0;linha<N;linha++){
-	  			for(unsigned int coluna=0;coluna<M;coluna++){
+	  		for(unsigned int linha=0;linha<this->N;linha++){
+	  			for(unsigned int coluna=0;coluna<this->M;coluna++){
 	  				fs>>peso;
 	  				std::cout<<"Linha: "<<linha<<" Coluna: "<<coluna<<" Peso: "<<std::stoi(peso)<<" ";
-	  				addArestas(linha,coluna,std::stoi(peso),N,M);
+	  				addArestas(linha,coluna,std::stoi(peso),this->N,this->M);
 	  			}
 	  			std::cout<<std::endl;
 	  		}
+	  		
 	  		unsigned int x,y;
 	  		std::string nomes="ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 	  		Jogador* jogador = nullptr;
@@ -55,27 +56,49 @@ namespace Jogo{
   		}
 	}
 
-	std::list<Node*>* Jogo::geraListaAdjacencia(const unsigned int N, const unsigned int M){
-		return new std::list<Node*>[N*M];
+	std::list<Node*>* Jogo::geraListaAdjacencia(){
+		return new std::list<Node*>[this->N*this->M];
 	}
 
-	void Jogo::addArestas(int x, int y, int peso, int N, int M){
+	void Jogo::addArestas(int x, int y, int peso){
 		std::cout<<"Se liga com:"<<std::endl;
 		//std::list<Node*>* listaAdjacencia;
-		if((x+peso)<=(N-1)){
-			std::cout<<"X: "<<x+peso<<" Y: "<<y<<std::endl;
-			(this->listaAdjacencia[(x+peso)*N + (y)]).push_back(new Node(x,y,peso));
+		if((x+peso)<=(this->N-1)){
+			int posicao = (x+peso)*this->N + (y);
+			std::cout<<"X: "<<x+peso<<" Y: "<<y<<" Posicao: "<<posicao<<std::endl;
+			(this->listaAdjacencia[posicao]).push_back(new Node(x,y,peso));
 		}if((x-peso)>=0){
-			std::cout<<"X: "<<x-peso<<" Y: "<<y<<std::endl;
-			(this->listaAdjacencia[(x-peso)*N + (y)]).push_back(new Node(x,y,peso));
+			int posicao = (x-peso)*this->N + (y);
+			std::cout<<"X: "<<x-peso<<" Y: "<<y<<" Posicao: "<<posicao<<std::endl;
+			(this->listaAdjacencia[posicao]).push_back(new Node(x,y,peso));
 			
-		}if((y+peso)<=(M-1)){
-			std::cout<<"X: "<<x<<" Y: "<<(y+peso)<<std::endl;
-			(this->listaAdjacencia[(x*N) + (y+peso)]).push_back(new Node(x,y,peso));
+		}if((y+peso)<=(this->M-1)){
+			int posicao = (x*this->N) + (y+peso);
+			std::cout<<"X: "<<x<<" Y: "<<(y+peso)<<" Posicao: "<<posicao<<std::endl;
+			(this->listaAdjacencia[posicao]).push_back(new Node(x,y,peso));
 			
 		}if((y-peso)>=0){
-			std::cout<<"X: "<<x<<" Y: "<<(y-peso)<<std::endl;
-			(this->listaAdjacencia[(x*N) + (y-peso)]).push_back(new Node(x,y,peso));
+			int posicao = (x*this->N) + (y-peso);
+			std::cout<<"X: "<<x<<" Y: "<<(y-peso)<<" Posicao: "<<posicao<<std::endl;
+			(this->listaAdjacencia[posicao]).push_back(new Node(x,y,peso));
 		}
+	}
+
+
+	void Jogo::ganhador(){
+		BFS();
+	}
+
+	void Jogo::BFS(){
+		bool Descobertos[this->N*this->M];
+		Descobertos[((this->N)*(this->M))-1]=true;
+		for(int i=0;i<(this->N*this->M)-2;i++){
+			Descobertos[i]=false;
+		} 
+		////////////////////////CONTINUAR DAQUI
+		std::list<std::list<Node>> listaDeListas;
+		std::list<Node> primeiraLista;
+		// Node(this->N-1,this->M-1)
+		primeiraLista.push_back()
 	}
 }
