@@ -1,24 +1,21 @@
 #include "Node.hpp"
 
 namespace Jogo{
-	Node::Node(Posicao* posicao){
-		this->posicao = posicao;
-		this->prox = nullptr;
-	}
-	Node::~Node(){
-		delete this->posicao;
-		delete this->prox;
+	Node::Node(int x, int y, int peso){
+		this->x = x;
+		this->y = y;
+		this->peso = peso;
 	}
 
-	Posicao* Node::getPosicao(){
-		return this->posicao;
+	int Node::getX(){
+		return this->x;
+	}
+	
+	int Node::getY(){
+		return this->y;
 	}
 
-	Node* Node::getProx(){
-		return this->prox;
-	}
-
-	void Node::setProx(Node* node){
-		this->prox = node;
+	int Node::getPeso(){
+		return this->peso;
 	}
 }

@@ -1,7 +1,6 @@
 #ifndef JOGADOR_H
 #define JOGADOR_H
 #include <string>
-#include "PosicaoJogador.hpp"
 namespace Jogo{
 	class Jogador{
 	private:
@@ -9,13 +8,16 @@ namespace Jogo{
 		int tamCaminho;
 		int pesoPenultimaJogada;
 		int ordemPrimeiraJogada;
-		PosicaoJogador* posicaoInicial;
+		unsigned int xPosInicial;
+		unsigned int yPosInicial;
 	public:
-		Jogador(std::string nome,int ordem,int x, int y);
+		Jogador(std::string nome,unsigned int ordem,unsigned int x, unsigned int y);
 		int getTamCaminho();
 		int getPesoPenultimaJogada();
 		int getOrdemPrimeiraJogada();
-		Posicao* getPosicaoInicial();
+		std::string getNome();
+		unsigned int getX();
+		unsigned int getY();
 		void setTamCaminho(int);
 		void setPesoPenultimaJogada(int);
 		~Jogador();

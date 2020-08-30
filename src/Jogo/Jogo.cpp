@@ -3,12 +3,13 @@
 namespace Jogo{
 
 	Jogo::Jogo(){
-		this->listaJogadores = nullptr;
+		this->listaJogadores = new std::list<Jogador*>;
 		this->listaAdjacencia = nullptr;
 	}
 
 	Jogo::~Jogo(){
 		delete this->listaAdjacencia;
+		delete this->listaJogadores;
 	}
 
 	void Jogo::configuraJogo(std::string arq_entrada){
@@ -26,26 +27,26 @@ namespace Jogo{
 	  		std::cout<<N<<" "<<M<<std::endl;
 	  		fs>>K;
 	  		std::cout<<K<<std::endl;
-	  		unsigned int peso;
+	  		std::string peso;
 	  		for(unsigned int linha=0;linha<N;linha++){
 	  			for(unsigned int coluna=0;coluna<M;coluna++){
 	  				fs>>peso;
-	  				std::cout<<"Linha: "<<linha<<" Coluna: "<<coluna<<" Peso: "<<peso<<" ";
-	  				addArestas(linha,coluna,peso,N,M);
+	  				std::cout<<"Linha: "<<linha<<" Coluna: "<<coluna<<" Peso: "<<std::stoi(peso)<<" ";
+	  				addArestas(linha,coluna,std::stoi(peso),N,M);
 	  			}
 	  			std::cout<<std::endl;
 	  		}
-	  		
-	  		std::string x,y;
+	  		unsigned int x,y;
 	  		std::string nomes="ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 	  		Jogador* jogador = nullptr;
-	  		for(unsigned int numJogador=0;numJogador<K;numJogador++){
+	  		for(unsigned int numJogador=0;numJogador<K;numJogador++){	
 	  			fs>>x;
 	  			fs>>y;
-	  			jogador = new Jogador(nomes.at(numJogador),numJogador,x,y,);
-	  			(*this->listaJogadores).push_back(jogador);
-	  			std::cout<<x<<" "<<y<<std::endl;
+	  			jogador = new Jogador(((std::string) nomes.substr(numJogador,1)),numJogador,x,y);
+	  			(this->listaJogadores)->push_back(jogador);
+	  			std::cout<<"Jogador: "<<jogador->getNome()<<" X: "<<jogador->getX()<<" Y: "<<jogador->getY()<<std::endl;
 	  		}
+	  		std::cout<<"Fim"<<std::endl;
 	  		fs.close();
  		 }else{
     		std::cout<< "Erro ao abrir o arquivo - confira o local e nome do arquivo"<<std::endl;
@@ -62,19 +63,19 @@ namespace Jogo{
 		std::cout<<"Se liga com:"<<std::endl;
 		//std::list<Node*>* listaAdjacencia;
 		if((x+peso)<=(N-1)){
-			(this->listaAdjacencia[(x+peso)*N + (y+1)]).push_back(new Node(new Posicao(x,y,peso)));
 			std::cout<<"X: "<<x+peso<<" Y: "<<y<<std::endl;
+			(this->listaAdjacencia[(x+peso)*N + (y)]).push_back(new Node(x,y,peso));
 		}if((x-peso)>=0){
-			(this->listaAdjacencia[(x-peso)*N + (y+1)]).push_back(new Node(new Posicao(x,y,peso)));
 			std::cout<<"X: "<<x-peso<<" Y: "<<y<<std::endl;
+			(this->listaAdjacencia[(x-peso)*N + (y)]).push_back(new Node(x,y,peso));
+			
 		}if((y+peso)<=(M-1)){
-			(this->listaAdjacencia[(x*N) + (y+1+peso)]).push_back(new Node(new Posicao(x,y,peso)));
-			std::cout<<"X: "<<x<<" Y: "<<y+peso<<std::endl;
+			std::cout<<"X: "<<x<<" Y: "<<(y+peso)<<std::endl;
+			(this->listaAdjacencia[(x*N) + (y+peso)]).push_back(new Node(x,y,peso));
+			
 		}if((y-peso)>=0){
-			(this->listaAdjacencia[(x*N) + (y+1-peso)]).push_back(new Node(new Posicao(x,y,peso)));
-			std::cout<<"X: "<<x<<" Y: "<<y-peso<<std::endl;
+			std::cout<<"X: "<<x<<" Y: "<<(y-peso)<<std::endl;
+			(this->listaAdjacencia[(x*N) + (y-peso)]).push_back(new Node(x,y,peso));
 		}
 	}
-
-	
 }

@@ -1,18 +1,19 @@
 #include "Jogador.hpp"
 
 namespace Jogo{
-	Jogador::Jogador(std::string nome,int ordem,int x, int y){
+	Jogador::Jogador(std::string nome,unsigned int ordem,unsigned int x, unsigned int y){
 		this->nome = nome;
 		this->ordemPrimeiraJogada = ordem;
-		this->posicaoInicial = new PosicaoJogador(x,y);
-	}
-
-	Jogador::~Jogador(){
-		delete this->posicaoInicial;
+		this->xPosInicial = x;
+		this->yPosInicial = y;
 	}
 
 	int Jogador::getTamCaminho(){
 		return this->tamCaminho;
+	}
+
+	std::string Jogador::getNome(){
+		return this->nome;
 	}
 
 	int Jogador::getPesoPenultimaJogada(){
@@ -23,8 +24,12 @@ namespace Jogo{
 		return this->ordemPrimeiraJogada;
 	}
 
-	PosicaoJogador* Jogador::getPosicaoInicial(){
-		return this->posicaoInicial;
+	unsigned int Jogador::getX(){
+		return this->xPosInicial;
+	}
+
+	unsigned int Jogador::getY(){
+		return this->yPosInicial;
 	}
 
 	void Jogador::setTamCaminho(int tamanho){

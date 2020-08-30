@@ -16,18 +16,11 @@ $(BUILD)main.o:	$(SRC)main.cpp $(INCLUDE)$(JOGO)Jogo.hpp
 $(BUILD)$(JOGO)Jogo.o: $(SRC)$(JOGO)Jogo.cpp $(INCLUDE)$(JOGO)Jogo.hpp $(BUILD)$(JOGO)Jogador.o $(BUILD)$(JOGO)Node.o 
 	$(CC) $(CFLAGS) -I $(INCLUDE)$(JOGO) -c $(SRC)$(JOGO)Jogo.cpp -o $(BUILD)$(JOGO)Jogo.o
 
-$(BUILD)$(JOGO)Jogador.o: $(SRC)$(JOGO)Jogador.cpp $(INCLUDE)$(JOGO)Jogador.hpp $(BUILD)$(JOGO)PosicaoJogador.o 
+$(BUILD)$(JOGO)Jogador.o: $(SRC)$(JOGO)Jogador.cpp $(INCLUDE)$(JOGO)Jogador.hpp 
 	$(CC) $(CFLAGS) -I $(INCLUDE)$(JOGO) -c $(SRC)$(JOGO)Jogador.cpp -o $(BUILD)$(JOGO)Jogador.o
 
-$(BUILD)$(JOGO)Node.o: $(SRC)$(JOGO)Node.cpp $(INCLUDE)$(JOGO)Node.hpp $(BUILD)$(JOGO)Posicao.o 
+$(BUILD)$(JOGO)Node.o: $(SRC)$(JOGO)Node.cpp $(INCLUDE)$(JOGO)Node.hpp 
 	$(CC) $(CFLAGS) -I $(INCLUDE)$(JOGO) -c $(SRC)$(JOGO)Node.cpp -o $(BUILD)$(JOGO)Node.o
-
-$(BUILD)$(JOGO)PosicaoJogador.o: $(SRC)$(JOGO)PosicaoJogador.cpp $(INCLUDE)$(JOGO)PosicaoJogador.hpp 
-	$(CC) $(CFLAGS) -I $(INCLUDE)$(JOGO) -c $(SRC)$(JOGO)PosicaoJogador.cpp -o $(BUILD)$(JOGO)PosicaoJogador.o
-
-$(BUILD)$(JOGO)Posicao.o: $(SRC)$(JOGO)Posicao.cpp $(INCLUDE)$(JOGO)Posicao.hpp 
-	$(CC) $(CFLAGS) -I $(INCLUDE)$(JOGO) -c $(SRC)$(JOGO)Posicao.cpp -o $(BUILD)$(JOGO)Posicao.o
-
 
 test:	$(EXEC)
 	@bash run_tests.sh $(EXEC) $(TMPOUT)

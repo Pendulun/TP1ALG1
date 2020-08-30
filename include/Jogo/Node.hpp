@@ -1,17 +1,17 @@
 #ifndef NODE_H
 #define NODE_H
-#include "Posicao.hpp"
 namespace Jogo{
 	class Node{
 	private:
-		Posicao* posicao;
-		Node* prox;
+		int x;
+		int y;
+		int peso;
 	public:
-		Node(Posicao*);
+		Node(int,int,int);
 		~Node();
-		Posicao* getPosicao();
-		Node* getProx();
-		void setProx(Node*);
+		int getX();
+		int getY();
+		int getPeso();
 	};
 }
 #endif
