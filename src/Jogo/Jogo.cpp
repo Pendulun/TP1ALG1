@@ -198,13 +198,31 @@ namespace Jogo{
 		for(auto iterador = (*this->listaJogadores).begin();iterador!=(*this->listaJogadores).end();iterador++){
 			std::cout<<"Jogador Analisado: ";
 			std::cout<<"Jogador: "<<(*iterador)->getNome()<<" X: "<<(*iterador)->getX()<<" Y: "<<(*iterador)->getY()<<std::endl;
-			unsigned int posicaoJogador = (*iterador)->getX()*this->N + (*iterador)->getY();
-			if(this->arvore[posicaoJogador].first!=-1){
-				std::cout<<"Alcança Objetivo"<<std::endl;
-			}else{
-				std::cout<<"Não alcança Objetivo"<<std::endl;
+			int distancia = calculaDistancia((*iterador));
+			if(distancia!=NULL){
+
 			}
 		}
 		return nullptr;
+	}
+
+	int Jogo::calculaDistancia(Jogador* jogador){
+		unsigned int x = jogador->getX();
+		unsigned int y = jogador->getY();
+		unsigned int posicaoJogador = x*this->N + y;
+		if(this->arvore[posicaoJogador].first!=-1){
+				std::cout<<"Alcança Objetivo"<<std::endl;
+				bool achou = false;
+				while(achou)
+				for(int it = 0;it<this->N*this->M;it++){
+					std::cout<<"Achado por: X:"<<this->arvore[it].first;
+					std::cout<<" Y: "<<this->arvore[it].second<<std::endl;
+				}
+				jogador->setTamCaminho();
+			}else{
+				std::cout<<"Não alcança Objetivo"<<std::endl;
+				return NULL;
+			}
+		
 	}
 }

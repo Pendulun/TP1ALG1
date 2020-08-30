@@ -22,6 +22,7 @@ namespace Jogo{
 		void addArestas(int,int,int);
 		std::list<Node*>* geraListaAdjacencia();
 		Jogador* pegarMenor();
+		unsigned int calculaDistancia(Jogador*);
 		void BFS();
 	};
 }
