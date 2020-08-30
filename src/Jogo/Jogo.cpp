@@ -5,6 +5,7 @@ namespace Jogo{
 	Jogo::Jogo(){
 		this->listaJogadores = new std::list<Jogador*>;
 		this->listaAdjacencia = nullptr;
+		this->arvore=nullptr;
 		this->N=0;
 		this->M=0;
 	}
@@ -12,6 +13,7 @@ namespace Jogo{
 	Jogo::~Jogo(){
 		delete this->listaAdjacencia;
 		delete this->listaJogadores;
+		delete this->arvore;
 	}
 
 	void Jogo::configuraJogo(std::string arq_entrada){
@@ -102,6 +104,13 @@ namespace Jogo{
 	void Jogo::ganhador(){
 		std::cout<<"Ganhador"<<std::endl;
 		BFS();
+		Jogador* vencedor = pegarMenor();
+		if(vencedor!=nullptr){
+			std::cout<<vencedor->getNome()<<std::endl;
+			std::cout<<vencedor->getTamCaminho();
+		}else{
+			std::cout<<"SEM VENCEDORES"<<std::endl;
+		}
 	}
 
 	void Jogo::BFS(){
@@ -114,11 +123,11 @@ namespace Jogo{
 		} 
 		std::cout<<"A"<<std::endl;
 
-		//Quem achou quem
-		std::pair< int,int> achadoPor[this->N*this->M];
+		//Árvore T em formato de vetor
+		this->arvore = new std::pair<int,int>[this->N*this->M];
 		for(int i=0;i<(this->N*this->M);i++){
 			std::pair< int, int> zera = std::make_pair (-1,-1);
-			achadoPor[i]= zera;
+			arvore[i]= zera;
 		}
 		std::cout<<"B"<<std::endl;
 
@@ -162,8 +171,8 @@ namespace Jogo{
 	  					std::cout<<"H"<<std::endl;
 	  					//Defina Descoberto[v]=true
 	  					Descobertos[posicaoDescoberto]=true;
-	  					achadoPor[posicaoDescoberto].first= (*iteradorLista).getX();
-	  					achadoPor[posicaoDescoberto].second= (*iteradorLista).getY();
+	  					this->arvore[posicaoDescoberto].first= (*iteradorLista).getX();
+	  					this->arvore[posicaoDescoberto].second= (*iteradorLista).getY();
 	  					//Adicione v à L[i+1]
 	  					novaCamada.push_back(*(*iteradorAdjacencia));
 	  				}
@@ -175,12 +184,27 @@ namespace Jogo{
 			iteradorListaListas++;
 			std::cout<<"J"<<std::endl;
 		}
+
 		std::cout<<"Quem achou quem: "<<std::endl;
-		//std::pair< int,int> achadoPor
 		for(int it = 0;it<this->N*this->M;it++){
 			std::cout<<"Posicao: "<<it<<std::endl;
-			std::cout<<"Achado por: X:"<<achadoPor[it].first;
-			std::cout<<" Y: "<<achadoPor[it].second<<std::endl;
+			std::cout<<"Achado por: X:"<<this->arvore[it].first;
+			std::cout<<" Y: "<<this->arvore[it].second<<std::endl;
 		}
+	}
+
+	Jogador* Jogo::pegarMenor(){
+		std::cout<<"Analisando Jogadores"<<std::endl;
+		for(auto iterador = (*this->listaJogadores).begin();iterador!=(*this->listaJogadores).end();iterador++){
+			std::cout<<"Jogador Analisado: ";
+			std::cout<<"Jogador: "<<(*iterador)->getNome()<<" X: "<<(*iterador)->getX()<<" Y: "<<(*iterador)->getY()<<std::endl;
+			unsigned int posicaoJogador = (*iterador)->getX()*this->N + (*iterador)->getY();
+			if(this->arvore[posicaoJogador].first!=-1){
+				std::cout<<"Alcança Objetivo"<<std::endl;
+			}else{
+				std::cout<<"Não alcança Objetivo"<<std::endl;
+			}
+		}
+		return nullptr;
 	}
 }

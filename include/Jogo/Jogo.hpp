@@ -17,9 +17,11 @@ namespace Jogo{
 	private:
 		std::list<Jogador*>* listaJogadores;
 		std::list<Node*>* listaAdjacencia;
+		std::pair<int,int>* arvore;
+		unsigned int N,M;
 		void addArestas(int,int,int);
 		std::list<Node*>* geraListaAdjacencia();
-		unsigned int N,M;
+		Jogador* pegarMenor();
 		void BFS();
 	};
 }
