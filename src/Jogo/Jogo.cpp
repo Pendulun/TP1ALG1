@@ -99,11 +99,11 @@ namespace Jogo{
 
 	void Jogo::BFS(){
 		//Descobertos
-		bool Descobertos[this->N*this->M];
-		Descobertos[((this->N)*(this->M))-1]=true;
-		for(int i=0;i<(this->N*this->M)-2;i++){
-			Descobertos[i]=false;
-		} 
+		// bool Descobertos[this->N*this->M];
+		// Descobertos[((this->N)*(this->M))-1]=true;
+		// for(int i=0;i<(this->N*this->M)-2;i++){
+		// 	Descobertos[i]=false;
+		// } 
 		
 
 		//Árvore T em formato de vetor
@@ -143,9 +143,9 @@ namespace Jogo{
 	  				iteradorAdjacencia++){
 					unsigned int posicaoDescoberto = ((*iteradorAdjacencia)->getX()*this->N) + ((*iteradorAdjacencia)->getY());
 					//Se v não tiver sido descoberto
-	  				if(!Descobertos[posicaoDescoberto]){
+	  				if(this->arvore[posicaoDescoberto].first==-1){
 	  					//Defina Descoberto[v]=true
-	  					Descobertos[posicaoDescoberto]=true;
+	  					//Descobertos[posicaoDescoberto]=true;
 	  					this->arvore[posicaoDescoberto].first= (*iteradorLista).getX();
 	  					this->arvore[posicaoDescoberto].second= (*iteradorLista).getY();
 	  					//Adicione v à L[i+1]

@@ -10,7 +10,7 @@ JOGO=Jogo/
 $(EXEC):	$(BUILD)main.o $(BUILD)$(JOGO)Jogo.o 
 	$(CC) $(CFLAGS) -o $(EXEC) $(BUILD)main.o $(BUILD)$(JOGO)*.o 
 
-$(BUILD)main.o:	$(SRC)main.cpp $(INCLUDE)$(JOGO)Jogo.hpp  
+$(BUILD)main.o:	$(SRC)main.cpp $(BUILD)$(JOGO)Jogo.o  
 	$(CC) $(CFLAGS) -I $(INCLUDE)$(JOGO) -c $(SRC)main.cpp -o $(BUILD)main.o
 
 $(BUILD)$(JOGO)Jogo.o: $(SRC)$(JOGO)Jogo.cpp $(INCLUDE)$(JOGO)Jogo.hpp $(BUILD)$(JOGO)Jogador.o $(BUILD)$(JOGO)Node.o 
